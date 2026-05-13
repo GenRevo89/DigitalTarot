@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
 import { tarotDeck, TarotCard } from "../data/tarot";
 import styles from "./page.module.css";
@@ -13,6 +13,60 @@ export default function Home() {
   const [phase, setPhase] = useState<AnimationPhase>('idle');
   const [focusedIndex, setFocusedIndex] = useState<number>(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [zoomLevel, setZoomLevel] = useState(1);
+
+  // Loading / image preload state
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadProgress, setLoadProgress] = useState(0);
+  const [loadingText, setLoadingText] = useState('Awakening the deck...');
+  const [fadeOut, setFadeOut] = useState(false);
+  const hasPreloaded = useRef(false);
+
+  useEffect(() => {
+    if (hasPreloaded.current) return;
+    hasPreloaded.current = true;
+
+    const allImages = [
+      '/kosmic_bloom_logo.png',
+      '/table-bg.png',
+      '/arrow_left.png',
+      '/arrow_right.png',
+      ...tarotDeck.map(c => c.image),
+    ];
+    const total = allImages.length;
+    let loaded = 0;
+
+    const suitLabels: Record<number, string> = {
+      0: 'Channeling the cosmos...',
+      3: 'Summoning the Major Arcana...',
+      25: 'Pouring the Cups...',
+      39: 'Forging the Swords...',
+      53: 'Igniting the Wands...',
+      67: 'Unearthing the Pentacles...',
+    };
+
+    const updateProgress = () => {
+      loaded++;
+      const pct = Math.round((loaded / total) * 100);
+      setLoadProgress(pct);
+      if (suitLabels[loaded]) setLoadingText(suitLabels[loaded]);
+
+      if (loaded >= total) {
+        setLoadingText('The veil parts...');
+        setTimeout(() => {
+          setFadeOut(true);
+          setTimeout(() => setIsLoading(false), 800);
+        }, 600);
+      }
+    };
+
+    allImages.forEach(src => {
+      const img = new window.Image();
+      img.onload = updateProgress;
+      img.onerror = updateProgress;
+      img.src = src;
+    });
+  }, []);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 1200);
@@ -122,6 +176,25 @@ export default function Home() {
   const CARD_SPACING = 14;
   const isSpread = phase === 'spreading' || phase === 'returning-cards' || phase === 'gathering';
 
+  if (isLoading) {
+    return (
+      <main className={`${styles.container} ${styles.loadingScreen} ${fadeOut ? styles.loadingFadeOut : ''}`}>
+        <div className={styles.ambientGlow}></div>
+        <div className={styles.stars}></div>
+        <div className={styles.twinkling}></div>
+        <div className={styles.loadingContent}>
+          <Image src="/kosmic_bloom_logo.png" alt="Kosmic Bloom" width={180} height={180} className={styles.loadingLogo} unoptimized priority />
+          <h1 className={`${styles.loadingTitle} golden-text cinzel`}>Kosmic Bloom Tarot</h1>
+          <p className={styles.loadingSubtitle}>{loadingText}</p>
+          <div className={styles.progressTrack}>
+            <div className={styles.progressBar} style={{ width: `${loadProgress}%` }}></div>
+          </div>
+          <span className={styles.progressPct}>{loadProgress}%</span>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className={styles.container}>
       <div className={styles.ambientGlow}></div>
@@ -139,6 +212,11 @@ export default function Home() {
               This digital deck is governed by the Web Crypto API. By gathering entropy directly from your device&apos;s hardware state, every shuffle and draw is mathematically unpredictable and uniquely bound to the exact millisecond of your intention.
             </p>
           </div>
+          <div className={styles.zoomControls}>
+            <button className={`${styles.zoomBtn} cinzel`} onClick={() => setZoomLevel(z => Math.max(0.4, z - 0.1))}>−</button>
+            <span className={styles.zoomLabel}>{Math.round(zoomLevel * 100)}%</span>
+            <button className={`${styles.zoomBtn} cinzel`} onClick={() => setZoomLevel(z => Math.min(2, z + 0.1))}>+</button>
+          </div>
         </div>
       </div>
 
@@ -146,7 +224,7 @@ export default function Home() {
         <p className={styles.subtitle}>Fated Draws. True Randomness.</p>
       </div>
 
-      <div className={styles.tableContent}>
+      <div className={styles.tableContent} style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'center center' }}>
         <h1 className={`${styles.title} golden-text`}>Kosmic<br />Bloom<br />Tarot</h1>
 
         <div className={styles.deckArea}>

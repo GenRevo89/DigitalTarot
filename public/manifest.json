@@ -1,0 +1,18 @@
+{
+  "name": "Kosmic Bloom Tarot",
+  "short_name": "Kosmic Tarot",
+  "description": "A masterful digital tarot experience. Fated draws. True randomness.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#120516",
+  "theme_color": "#120516",
+  "icons": [
+    {
+      "src": "/kosmic_bloom_logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
