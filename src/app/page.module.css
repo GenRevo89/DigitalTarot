@@ -1,0 +1,455 @@
+.container {
+  height: 100vh;
+  max-height: 100vh;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* --- INDIAN MYSTIC BACKGROUND EFFECTS --- */
+.ambientGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150vw;
+  height: 150vh;
+  background: radial-gradient(circle, rgba(211, 47, 47, 0.18) 0%, transparent 65%);
+  z-index: 0;
+  pointer-events: none;
+  animation: breathe 8s ease-in-out infinite alternate;
+}
+
+.stars {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: 
+    radial-gradient(1px 1px at 20px 30px, #FFE082, rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 40px 70px, #FFB300, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 90px 40px, #D32F2F, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 160px 120px, #FFF8E1, rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  z-index: 0;
+  opacity: 0.6;
+  animation: drift 120s linear infinite;
+  pointer-events: none;
+}
+
+.twinkling {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: radial-gradient(2px 2px at 150px 150px, #FFD54F, rgba(0,0,0,0));
+  background-size: 250px 250px;
+  z-index: 0;
+  animation: twinkle 4s infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes breathe {
+  0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.6; }
+  100% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+}
+
+@keyframes drift {
+  from { background-position: 0 0; }
+  to { background-position: -1000px 1000px; }
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.1; box-shadow: none; }
+  50% { opacity: 1; box-shadow: 0 0 15px #FFB300; }
+  100% { opacity: 0.1; box-shadow: none; }
+}
+
+/* ========== CORNER ELEMENTS ========== */
+
+/* Top bar: logo left, explainer right */
+.topBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 2rem 3rem;
+  z-index: 50;
+  pointer-events: none;
+}
+
+.topLeftLogo {
+  pointer-events: auto;
+}
+
+.logo {
+  border-radius: 50%;
+  border: 3px solid #FFCA28;
+  box-shadow: 0 0 35px rgba(255, 179, 0, 0.8);
+  width: 120px;
+  height: 120px;
+}
+
+.rightSidebar {
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  width: 380px;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.explainerPanel {
+  background: rgba(18, 5, 22, 0.7);
+  border: 1px solid rgba(255, 179, 0, 0.3);
+  padding: 1.8rem 2rem;
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+  text-align: left;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.explainerTitle {
+  font-family: var(--font-cinzel);
+  font-size: 1.25rem;
+  margin-bottom: 1.2rem;
+  letter-spacing: 1.5px;
+}
+
+.explainerBody {
+  color: #FFCA28;
+  opacity: 0.85;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  text-align: justify;
+  font-weight: 300;
+}
+
+/* Bottom-left subtitle */
+.bottomLeftBranding {
+  position: absolute;
+  bottom: 3rem;
+  left: 3rem;
+  z-index: 50;
+  pointer-events: auto;
+}
+
+.subtitle {
+  color: #FFCA28;
+  font-size: 1.8rem;
+  font-weight: 400;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  text-shadow: 0 0 15px rgba(211, 47, 47, 0.6);
+  opacity: 0.9;
+}
+
+/* Bottom-right controls */
+.bottomRightControls {
+  position: absolute;
+  bottom: 3rem;
+  right: 3rem;
+  display: flex;
+  gap: 1.5rem;
+  z-index: 100;
+  pointer-events: auto;
+}
+
+/* ========== TABLE CONTENT ========== */
+
+.tableContent {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+}
+
+/* Title pinned to left edge, vertically centered */
+.title {
+  position: absolute;
+  left: 3rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 5rem;
+  margin: 0;
+  text-shadow: 0 0 30px rgba(255, 179, 0, 0.5);
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: left;
+  z-index: 20;
+}
+
+.deckArea {
+  position: absolute;
+  left: 25%;
+  height: 600px;
+  width: 250px;
+  perspective: 1200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ========== CARD BACK STYLES ========== */
+
+.cardBackWrapper {
+  position: absolute;
+  width: 135px;
+  height: 225px;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  transform-style: preserve-3d;
+}
+
+.cardBackWrapper:hover {
+  z-index: 1000 !important;
+}
+
+.cardBack {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #5D001E, #2A0800);
+  border: 2px solid #FFB300;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.9), 0 0 12px rgba(211, 47, 47, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  cursor: pointer;
+  backface-visibility: hidden;
+}
+
+.cardBackInner {
+  width: 88%;
+  height: 92%;
+  border: 1px dashed rgba(255, 179, 0, 0.7);
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Mehndi / Mandala geometric feel */
+  background-image: 
+    radial-gradient(circle at center, rgba(255, 179, 0, 0.1) 0%, transparent 60%),
+    repeating-linear-gradient(45deg, rgba(255, 179, 0, 0.1) 25%, transparent 25%, transparent 75%, rgba(255, 179, 0, 0.1) 75%, rgba(255, 179, 0, 0.1));
+  background-position: center center, 0 0;
+  background-size: 100% 100%, 14px 14px;
+}
+
+.cardBackSymbol {
+  font-size: 4rem;
+  color: #FFD54F;
+  text-shadow: 0 0 20px rgba(255, 179, 0, 0.9);
+  animation: pulse-glow 3s infinite;
+  line-height: 1;
+}
+
+.cardBack:hover {
+  transform: translateY(-50px) scale(1.08);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.9), 0 0 35px rgba(255, 179, 0, 0.8);
+  border-color: #FFF8E1;
+}
+
+/* ========== DRAWN CARD CAROUSEL ========== */
+
+.drawnArea {
+  position: absolute;
+  left: 60%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1600px;
+  transform-style: preserve-3d;
+}
+
+@keyframes flyInFromDeck {
+  0% {
+    transform: translateX(-600px) translateY(0px) rotateY(180deg) scale(0.2);
+    opacity: 0;
+  }
+}
+
+.drawnCardWrapper {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 540px; 
+  transition: all 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation: flyInFromDeck 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+  cursor: pointer;
+}
+
+.drawnCard {
+  width: 540px;
+  height: 900px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.9), 0 0 30px rgba(255, 179, 0, 0.4);
+  border: 2px solid #FFB300;
+  position: relative;
+  background-color: #120516;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.drawnCard:hover {
+  transform: scale(1.04);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.95), 0 0 50px rgba(255, 179, 0, 0.7);
+  border-color: #FFF8E1;
+}
+
+.drawnCard img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: contrast(1.1) saturate(1.2); 
+}
+
+/* ========== CARD INFO ========== */
+
+.cardInfo {
+  margin-top: 1.5rem;
+  text-align: center;
+  width: 100%;
+  background: rgba(48, 10, 20, 0.8);
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 179, 0, 0.3);
+  backdrop-filter: blur(8px);
+}
+
+.cardName {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.9);
+}
+
+.cardSuit {
+  font-size: 0.95rem;
+  color: #FFCA28;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* ========== CAROUSEL CONTROLS ========== */
+
+.carouselControls {
+  position: absolute;
+  top: 520px;
+  display: flex;
+  gap: 3rem;
+  z-index: 200;
+}
+
+.arrowBtn {
+  background: rgba(18, 5, 22, 0.7);
+  border: 1px solid rgba(255, 179, 0, 0.5);
+  color: #FFCA28;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+  z-index: 200;
+}
+
+.arrowBtn:hover {
+  background: rgba(48, 10, 20, 0.9);
+  border-color: #FFF8E1;
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(255, 179, 0, 0.4);
+}
+
+/* ========== RESPONSIVE ========== */
+
+@media (max-width: 1200px) {
+  .topBar {
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem;
+    gap: 2rem;
+  }
+  .topLeftLogo {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  .bottomLeftBranding {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    text-align: center;
+  }
+  .subtitle {
+    font-size: 1.2rem;
+    letter-spacing: 3px;
+  }
+  .rightSidebar {
+    width: 100%;
+    align-items: center;
+    padding: 0;
+    text-align: center;
+  }
+  .title {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    font-size: 3rem;
+    text-align: center;
+  }
+  .bottomRightControls {
+    position: relative;
+    bottom: auto;
+    right: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+  .tableContent {
+    height: auto;
+    min-height: 700px;
+    flex-direction: column;
+    padding-top: 2rem;
+  }
+  .deckPanel {
+    position: relative;
+    left: 0;
+  }
+  .deckArea {
+    position: relative;
+    left: 0;
+    height: 350px;
+    width: 100%;
+  }
+  .cardBack:hover {
+    transform: translateY(-25px) scale(1.08);
+  }
+  .drawnArea {
+    position: relative;
+    left: 0;
+    transform: none;
+    min-height: 500px;
+  }
+  .drawnCard {
+    width: 280px;
+    height: 466px;
+  }
+  .drawnCardWrapper {
+    width: 280px;
+  }
+}
