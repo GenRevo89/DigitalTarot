@@ -39,7 +39,7 @@ export default function Home() {
   const handleShuffleDeck = () => {
     if (phase !== 'idle') return;
     setPhase('shuffling');
-    
+
     // Swap the cards in state while they are visually separated (midpoint of the 2s animation)
     setTimeout(() => {
       setDeckState(shuffleDeck([...deckState]));
@@ -53,10 +53,10 @@ export default function Home() {
 
   const handleSpreadDeck = () => {
     if (phase !== 'idle') return;
-    
+
     // 1. Shuffle animation first (lasts 2s)
     setPhase('shuffling');
-    
+
     setTimeout(() => {
       setDeckState(shuffleDeck(tarotDeck));
     }, 1000);
@@ -67,7 +67,7 @@ export default function Home() {
       // 2. Shift whole deck to the start position (after 2s shuffle completes)
       setPhase('moving-up');
     }, 2000);
-    
+
     // 3. Spread them downward
     setTimeout(() => {
       setPhase('spreading');
@@ -77,13 +77,13 @@ export default function Home() {
   const startGatherAnimation = () => {
     // Phase 1: Gather cards back to start position
     setPhase('gathering');
-    
+
     // Phase 2: Shift whole deck back to center
     // Wait for the cascade to finish (78 * 15ms = 1170ms + 400ms transition = ~1600ms)
     setTimeout(() => {
       setPhase('moving-down');
     }, 1600);
-    
+
     // Reset state once centered
     setTimeout(() => {
       setPhase('idle');
@@ -147,14 +147,14 @@ export default function Home() {
       </div>
 
       <div className={styles.tableContent}>
-        <h1 className={`${styles.title} golden-text`}>Kosmic<br/>Bloom<br/>Tarot</h1>
+        <h1 className={`${styles.title} golden-text`}>Kosmic<br />Bloom<br />Tarot</h1>
 
         <div className={styles.deckArea}>
           {deckState.map((card, i) => {
             const totalCards = deckState.length;
             const totalSpreadHeight = Math.max(150, totalCards * CARD_SPACING);
             const startY = -(totalSpreadHeight / 2);
-            
+
             let x = 0;
             let y = 0;
             let z = i * 1.5;
@@ -184,7 +184,7 @@ export default function Home() {
               y = Math.sin(theta) * radiusY;
               angle = r1 * 360; // Chaotic rotation
               z = r2 * 20; // Flatten out the pile but keep slight depth variation
-              
+
               delay = r1 * 200; // Stagger the explosive wash
             } else if (phase === 'moving-up') {
               y = startY;
@@ -242,7 +242,7 @@ export default function Home() {
             {drawnCards.map((card, index) => {
               const offset = index - focusedIndex;
               const isFocused = offset === 0;
-              
+
               let translateZ = isFocused ? 0 : -350;
               let translateX = offset * 250;
               let rotateY = offset * -30;
@@ -285,10 +285,10 @@ export default function Home() {
             {drawnCards.length > 1 && phase === 'spreading' && (
               <div className={styles.carouselControls}>
                 {focusedIndex > 0 && (
-                  <button className={`${styles.arrowBtn} cinzel`} onClick={() => setFocusedIndex(Math.max(0, focusedIndex - 1))}>&#8592;</button>
+                  <button className={`${styles.arrowBtn} cinzel`} onClick={() => setFocusedIndex(Math.max(0, focusedIndex - 1))}><Image src="/arrow_left.png" alt="Previous" width={96} height={96} unoptimized /></button>
                 )}
                 {focusedIndex < drawnCards.length - 1 && (
-                  <button className={`${styles.arrowBtn} cinzel`} onClick={() => setFocusedIndex(Math.min(drawnCards.length - 1, focusedIndex + 1))}>&#8594;</button>
+                  <button className={`${styles.arrowBtn} ${styles.arrowBtnRight} cinzel`} onClick={() => setFocusedIndex(Math.min(drawnCards.length - 1, focusedIndex + 1))}><Image src="/arrow_right.png" alt="Next" width={96} height={96} unoptimized /></button>
                 )}
               </div>
             )}
